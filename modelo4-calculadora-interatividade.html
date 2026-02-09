@@ -70,7 +70,7 @@
           as,
           {
             className: `${textVariants[variant]} ${className ? className : ""}`,
-            props,
+            ...props,
           },
           children,
         );
@@ -140,30 +140,71 @@
           >
             <Text
               as="div"
-              className=" flex items-center justify-end"
+              className=" flex items-center justify-end h-7"
               variant="muted"
             >
-              {operation}
+              {result && operation}
             </Text>
-            <div className={`flex justify-between`}>
+            <div className={`flex justify-between h-9`}>
               <Text variant="muted">=</Text>
-              <Text variant="blast">{result}</Text>
+              <Text variant="blast">{result || operation}</Text>
             </div>
           </div>
         );
       }
       function Calculator() {
+        const [operation, setOperation] = React.useState('');
+        const [result, setResult] = React.useState('');
+
+
+        
+        function handleInputClick(input){
+          if(input ==="C"){
+            setOperation("");
+            setResult("");
+            return;
+          }
+
+          if(input === "CE"){
+            setResult("");
+            setOperation(operation.slice(0, -2));
+            return;
+          }
+          if(input === "="){
+            const operationResult = eval(operation.replace(/,/g, '.'));
+            const parsedResult =  operationResult.toString()?.replace(/\./g, ',')
+            setResult(parsedResult);
+            return;
+          }
+
+          if(input === "," && !operation.endsWith(',')){
+            setOperation(`${operation},`);
+            return;
+          }
+          
+          setOperation(`${operation}${operation.endsWith(',') ? "" : " "}${input}`);
+        }
+
+
         return (
           <Card
-            className={`flex flex-col gap=[1.625rem] w-[22.25rem] pt-14 px-8 pb-8`}
+            className={`flex flex-col gap-[1.625rem] w-[22.25rem] pt-14 px-8 pb-8`}
           >
-            <CalculatorDisplay operation="1+1" result="2" />
+            <CalculatorDisplay 
+              operation={operation} 
+              result={result} 
+            />
 
             <div className="flex flex-col gap-3">
               {buttons.map((row, index) => (
                 <div key={`row-${index}`} className="flex gap-3">
                   {row.map(button =>(
-                    <Button key={button.input} className={button.className || "h-16 w-16"} variant = {button.variant}>{button.input}</Button>
+                    <Button key={button.input} 
+                    className={button.className || "h-16 w-16"} 
+                    variant = {button.variant} 
+                    onClick={() => handleInputClick(button.input)}>
+                      {button.input}
+                    </Button>
                   ))}
                   
                 </div>
