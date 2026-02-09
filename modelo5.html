@@ -1,0 +1,80 @@
+ <!-- Primeiro contato com react  -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rocketseat - React.js - Fundamentos</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Tailwind -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <!-- React e ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Seu código React -->
+  <script type="text/babel">
+
+    function AlertButton(){
+        function handleAlertClick(){
+            alert("Uma mensagem de alerta")
+        }
+
+        return(
+            <button type="button" onClick={handleAlertClick}>
+            Mostrar Alerta!    
+            </button>
+        )
+    }
+
+    function AlertButton2(){
+        //esse aqui tem mais cara de react
+        function handleAlertClick(msg){
+            alert(msg)
+        }
+        return(
+            <button onClick={() => handleAlertClick("uma mensagem de alerta")}>
+                Mostrar alerta com parametro
+            </button>
+        )
+
+    }
+    function AlertButton3(){
+        //importante para coleta de dados
+        function handleAlertClick(event){
+            alert(event.target.previousSibling.value)
+        }
+        function handleInputChange(event){
+            console.log(event.target.value)
+        }
+        return(
+           <div>
+                <input type="text" 
+                placeholder="digite algo" 
+                onChange={handleInputChange}/>
+                <button type="button" onClick={handleAlertClick}>Mostrar alerta do campo de text</button>
+            </div> 
+        )
+    }
+    function App() {
+      return (
+        <main className="flex justify-center">
+            <AlertButton/>
+            <AlertButton2/>
+            <AlertButton3/>
+        </main>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>

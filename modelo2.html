@@ -1,0 +1,50 @@
+ <!-- Criação de componente  -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rocketseat - React.js - Fundamentos</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Tailwind -->
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <!-- React e ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Seu código React -->
+  <script type="text/babel">
+
+    function Button(){
+        return(
+            <button className="p-4 bg-fuchsia-400 rounded-lg m-5 text-white capitalize">
+            botão
+            </button>
+        )
+    }
+
+    function App() {
+      return (
+        <div className="p-4 text-center">
+          <h1 className="text-2xl font-bold text-blue-600">
+            Hello React + Tailwind!
+          </h1>
+          <Button />
+          <Button />
+          <Button />
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
