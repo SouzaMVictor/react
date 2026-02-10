@@ -28,15 +28,25 @@
 
         React.useEffect(() => {
             console.log('componente montado')
+            return () =>{
+                console.log('componente desmontado')
+            }
         },[])
 
         React.useEffect(() =>{
             if (counter >0 ){ console.log(`contador atualizado: ${counter}`)}  
         },[counter])
         
+        React.useEffect(() =>{
+            console.log('contador ou nome atualizados')
+        },[counter, name])
       
         return(
             <>
+            <div>
+                <label for="">Nome</label>
+                <input type="text" onChange={(e) => setName(e.target.value)}/>   
+            </div>
                 <p>Contador: {counter}</p>
                 <button type="button" onClick={() => setCounter((prevValue) => prevValue + 1)}>Atualizar +1</button>
                 <button type="button" onClick={() => setCounter((prevValue) => prevValue - 1)}>Atualizar -1</button>
@@ -44,9 +54,14 @@
         )
     }
     function App() {
+        const [show, setShow] = React.useState(true)
       return (
         <main>
-            <Contador2/>
+            <button onClick={() => setShow((prev) => !prev)}>
+                Mostrar / Esconder Contador
+            </button>
+            <hr/>
+            {show && <Contador2/>}
         </main>
       );
     }
