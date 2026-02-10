@@ -1,0 +1,88 @@
+ <!-- Primeiro contato com react  -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rocketseat - React.js - Fundamentos</title>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Tailwind -->
+  <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
+
+  <!-- React e ReactDOM -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- Seu código React -->
+  <script type="text/babel">
+    const CounterContext = React.createContext();
+    function CounterProvider({children}){
+
+        const [savedCounts, setSavedCounts] =  React.useState([])
+
+        function saveCount(count) {
+            setSavedCounts((prev) => [...prev, count])
+        }
+        return(
+            <CounterContext.Provider value={{savedCounts, saveCount}}>
+                {children}
+            </CounterContext.Provider>
+        )
+    }
+
+    // function Contador1(){
+    //     const [counter, setCounter] = React.useState(0)
+    //     return(
+    //         <>
+    //             <p>Contador: {counter}</p>
+    //             <button type="button" onClick={() => setCounter(counter + 1)}>Atualizar +1</button>
+    //             <button type="button" onClick={() => setCounter(counter - 1)}>Atualizar -1</button>
+    //         </>
+            
+    //     )
+    // }
+    function Contador2(){
+        const [counter, setCounter] = React.useState(0)
+        const {saveCount} = React.useContext(CounterContext)
+        return(
+            <>
+                <p>Contador: {counter}</p>
+                <button type="button" onClick={() => setCounter((prevValue) => prevValue + 1)}>Atualizar +1</button>
+                <button type="button" onClick={() => setCounter((prevValue) => prevValue - 1)}>Atualizar -1</button>
+                <button onClick={() => saveCount(counter)} >Salvar</button>
+            </>
+        )
+    }
+
+    function CounterList(){
+        const {savedCounts} = React.useContext(CounterContext)
+        return(
+            <div>
+                <h2>Valores salvos</h2>
+                <ul>
+                    {savedCounts.map((value, index) => <li key={`item-${index}`}>{value}</li> )}
+                </ul>
+            </div>
+        )
+    }
+    function App() {
+      return (
+            <CounterProvider>
+                <Contador2/>
+                <hr/>
+                <CounterList/>
+            </CounterProvider>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
+</body>
+</html>
