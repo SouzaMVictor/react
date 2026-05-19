@@ -21,10 +21,32 @@
 
   <!-- Seu código React -->
   <script type="text/babel">
+
+    function InputFocus(){
+        const ref = React.useRef(null);
+
+        function handleFocus(){
+          ref.current?.focus();
+        }
+
+        console.log(ref);
+        return(
+            <div className="space-x-2">
+                <input 
+                type="text"
+                className="p-2 border" 
+                placeholder="clique no botao para focar"
+                ref={ref}
+                />
+                <button className="p-2 border" onClick={handleFocus}>Focar Input</button>
+            </div>
+        )
+    }
+
     function App() {
       return (
-        <main>
-        ...    
+        <main className="p-4 space-y-6">
+        <InputFocus />   
         </main>
       );
     }
