@@ -1,0 +1,69 @@
+<!-- Primeiro contato com react  -->
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocketseat - React.js - Fundamentos</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Tailwind -->
+    <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
+
+    <!-- React e ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Seu código React -->
+    <script type="text/babel">
+      const users = [
+        { id: 1, name: "victor" },
+        { id: 2, name: "pedro" },
+        { id: 3, name: "thiago" },
+        { id: 4, name: "carlos" },
+        { id: 5, name: "guilherme" },
+      ];
+      function App() {
+        const [search, setSearch] = React.useState("");
+        const [count, setCount] = React.useState(0);
+        console.log("rerender!!!");
+        const filteredUsers = React.useMemo(() => {
+            console.log("filtrando dados");
+          return users.filter((user) =>
+            user.name.toLowerCase().includes(search.toLowerCase()),
+          );
+        }, [search]);
+
+        // users.filter(user =>
+        //   user.name.toLowerCase().includes(search.toLowerCase()),
+        // );
+
+        return (
+          <main>
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="buscar usuários"
+            />
+            <button onClick={() => setCount(count + 1)}>
+              re-render: {count}
+            </button>
+            <ul>
+              {filteredUsers.map((user) => (
+                <li key={user.id}>{user.name}</li>
+              ))}
+            </ul>
+          </main>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
