@@ -1,58 +1,111 @@
- <!-- Primeiro contato com react  -->
-<!DOCTYPE html>
+<!-- Primeiro contato com react  -->
+<!doctype html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rocketseat - React.js - Fundamentos</title>
-</head>
-<body>
-  <div id="root"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocketseat - React.js - Fundamentos</title>
+  </head>
+  <body>
+    <div id="root"></div>
 
-  <!-- Tailwind -->
-  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- Tailwind -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 
-  <!-- React e ReactDOM -->
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- React e ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-  <!-- Babel -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Seu código React -->
-  <script type="text/babel">
-
-    function InputFocus(){
+    <!-- Seu código React -->
+    <script type="text/babel">
+      function InputFocus() {
         const ref = React.useRef(null);
 
-        function handleFocus(){
+        function handleFocus() {
           ref.current?.focus();
         }
 
         console.log(ref);
-        return(
-            <div className="space-x-2">
-                <input 
-                type="text"
-                className="p-2 border" 
-                placeholder="clique no botao para focar"
-                ref={ref}
-                />
-                <button className="p-2 border" onClick={handleFocus}>Focar Input</button>
+        return (
+          <div className="space-x-2">
+            <input
+              type="text"
+              className="p-2 border"
+              placeholder="clique no botao para focar"
+              ref={ref}
+            />
+            <button className="p-2 border" onClick={handleFocus}>
+              Focar Input!!
+            </button>
+          </div>
+        );
+      }
+
+      function ScrollTracker() {
+        const containerRef = React.useRef(null);
+        const [scrollInfo, setScrollInfo] = React.useState({
+          scrollTop: 0,
+          scrollHeight: 0,
+        });
+        const [scrollPercentage, setScrollPercentage] = React.useState(0);
+        function handleContainerScroll() {
+          if (!containerRef.current) {
+            return;
+          }
+          const { scrollTop, scrollHeight, clientHeight } =
+            containerRef.current;
+
+          setScrollInfo({
+            scrollTop,
+            scrollHeight,
+            clientHeight,
+          });
+
+          const maxScroll = scrollHeight - clientHeight;
+          const percentage =  Math.round((scrollTop / maxScroll) *100);
+          setScrollPercentage(percentage)
+        }
+        return (
+          <div className="space-y-4">
+            <div
+              ref={containerRef}
+              onScroll = {handleContainerScroll}
+              className={`
+              border border-solid border-blue-600 overflow-y-auto h-60 p-4
+              `}
+            >
+              <div className="space-y-4">
+                {Array.from({ length: 20 }).map((_, index) => (
+                  <p key={index} className="p-2 bg-gray-100 rounded">
+                    item do conteudo {index + 1}
+                  </p>
+                ))}
+              </div>
             </div>
-        )
-    }
+            <ul className="space-y-2 list-disc pl-5">
+              <li>progresso do scroll: {scrollPercentage}</li>
+              <li>onde está o scroll (scrollTop): {scrollInfo.scrollTop}</li>
+              <li>tamanho do scroll (scrollHeight): {scrollInfo.scrollHeight}</li>
+              <li> tamanho do container: {scrollInfo.clientHeight}</li>
+            </ul>
+          </div>
+        );
+      }
+      function App() {
+        return (
+          <main className="p-4 space-y-6">
+            <InputFocus />
+            <hr />
+            <ScrollTracker />
+          </main>
+        );
+      }
 
-    function App() {
-      return (
-        <main className="p-4 space-y-6">
-        <InputFocus />   
-        </main>
-      );
-    }
-
-    const root = ReactDOM.createRoot(document.getElementById("root"));
-    root.render(<App />);
-  </script>
-</body>
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
 </html>
