@@ -1,0 +1,74 @@
+<!-- Primeiro contato com react  -->
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocketseat - React.js - Fundamentos</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Tailwind -->
+    <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
+
+    <!-- React e ReactDOM -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Seu código React -->
+    <script type="text/babel">
+      function App() {
+        const [is12H, setIs12H] = React.useState(false);
+        const [time, setTime] = React.useState("");
+        const [day, setDay] = React.useState("");
+        const [isAmericanDate, setIsAmericanDate] = React.useState(false);
+
+        const updatedTime = React.useCallback(() => {
+          const now = new Date(Date.now());
+
+          const formattedTime = now.toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: is12H,
+          });
+          setTime(formattedTime);
+
+          const formattedDay = now.toLocaleDateString(
+            isAmericanDate ? "en-US" : "pt-BR",
+          );
+          setDay(formattedDay);
+        }, [is12H, isAmericanDate]);
+
+        React.useEffect(() => {
+          updatedTime();
+          const timer = setInterval(() => {
+            updatedTime();
+          }, 1000);
+          return () => clearInterval(timer);
+        }, [updatedTime]);
+
+        return (
+          <main>
+            <div>{time}</div>
+            <button onClick={() => setIs12H(!is12H)}>
+              alterar formato para {is12H ? "24h" : "12h"}
+            </button>
+
+            <div>{day}</div>
+            <button onClick={() => setIsAmericanDate(!isAmericanDate)}>
+              alterar data para {isAmericanDate ? "BR" : "US"}
+            </button>
+          </main>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
